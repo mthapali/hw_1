@@ -35,7 +35,7 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
       for( int i = 0; i < M; i++ )
         for( int j = 0; j < K; j++ )
             smallA[j+i*BLOCK_SIZE] = A[i+j*lda];
-          
+
   /* For each row i of A */
   for (int i = 0; i < M; ++i)
     /* For each column j of B */ 
@@ -70,7 +70,7 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
 
 
   /* For each row i of A */
-    for (int i = 0; i < M; ++i)
+    for (int i = 0; i < M; ++i){
     /* For each column j of B */ 
       for (int j = 0; j < N; ++j) 
       {
@@ -102,6 +102,7 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
         C[i+j*lda] = cij;
       }
     }
+  }
 
 /* This routine performs a dgemm operation
  *  C := C + A * B
