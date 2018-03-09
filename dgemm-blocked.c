@@ -114,11 +114,11 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
            int K = min (BLOCK_SIZE, lda-k);
 
 	/* Perform individual block dgemm */
-           if((M % BLOCK_SIZE == 0) && (N % BLOCK_SIZE == 0) && (K % BLOCK_SIZE == 0)){
-            do_block_fast(lda, M, N, K, A + i + k*lda, B + k + j*lda, C + i + j*lda);
-          }else{
+          //  if((M % BLOCK_SIZE == 0) && (N % BLOCK_SIZE == 0) && (K % BLOCK_SIZE == 0)){
+          //   do_block_fast(lda, M, N, K, A + i + k*lda, B + k + j*lda, C + i + j*lda);
+          // }else{
     /* Perform individual block dgemm */
             do_block(lda, M, N, K, A + i + k*lda, B + k + j*lda, C + i + j*lda);
-          }
+          // }
         }
       }
