@@ -30,6 +30,12 @@ const char* dgemm_desc = "Simple blocked dgemm.";
  * where C is M-by-N, A is M-by-K, and B is K-by-N. */
 static void do_block (int lda, int M, int N, int K, double* A, double* B, double* C)
 {
+  double smallA[BLOCK_SIZE*BLOCK_SIZE] __attribute__ ((aligned (32)));
+
+      for( int i = 0; i < M; i++ )
+        for( int j = 0; j < K; j++ )
+            smallA[j+i*BLOCK_SIZE] = A[i+j*lda];
+          
   /* For each row i of A */
   for (int i = 0; i < M; ++i)
     /* For each column j of B */ 
@@ -38,7 +44,7 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
       /* Compute C(i,j) */
       double cij = C[i+j*lda];
       for (int k = 0; k < K; ++k)
-       cij += A[i+k*lda] * B[k+j*lda];
+        cij += smallA[k+i*BLOCK_SIZE] * B[k+j*lda];
      C[i+j*lda] = cij;
    }
  }
