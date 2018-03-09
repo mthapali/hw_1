@@ -13,7 +13,9 @@ LDLIBS = -lrt -Wl,--start-group $(MKLROOT)/lib/intel64/libmkl_intel_lp64.a $(MKL
 
 */
 
-#include "immintrin.h"   //added
+// #include "immintrin.h"   
+
+#include <immintrin.h>  //added
 
 const char* dgemm_desc = "Simple blocked dgemm.";
 
