@@ -121,6 +121,6 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
           }else{
     /* Perform individual block dgemm */
             do_block(lda, M, N, K, A + i + k*lda, B + k + j*lda, C + i + j*lda);
-          // }
+          }
         }
       }
