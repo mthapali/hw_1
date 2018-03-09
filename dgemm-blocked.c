@@ -20,7 +20,7 @@ LDLIBS = -lrt -Wl,--start-group $(MKLROOT)/lib/intel64/libmkl_intel_lp64.a $(MKL
 const char* dgemm_desc = "Simple blocked dgemm.";
 
 #if !defined(BLOCK_SIZE)
-#define BLOCK_SIZE 32
+#define BLOCK_SIZE 64
 #endif
 
 #define min(a,b) (((a)<(b))?(a):(b))
@@ -48,12 +48,6 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
   static double a[BLOCK_SIZE*BLOCK_SIZE] __attribute__ ((aligned (32)));  //change to 32
   static double temp[4] __attribute__ ((aligned (32)));  //added
 
-
-      //  make a local aligned copy of A's block
-  for( int j = 0; j < K; j++ ) 
-    for( int i = 0; i < M; i++ )
-      a[i+j*BLOCK_SIZE] = A[i+j*lda];
-
    //added
     __m256d vecA1;
     __m256d vecB1;
@@ -62,6 +56,12 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
     __m256d vecB2;
     __m256d vecC2;
     __m256d vecC0tmp;
+
+      //  make a local aligned copy of A's block
+  for( int j = 0; j < K; j++ ) 
+    for( int i = 0; i < M; i++ )
+      a[i+j*BLOCK_SIZE] = A[i+j*lda];
+
 
   /* For each row i of A */
     for (int i = 0; i < M; ++i)
