@@ -81,28 +81,29 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
           //added
           {
 
-                vecA1 = _mm256_load_pd (&a[k+i*BLOCK_SIZE]);
-                vecB1 = _mm256_loadu_pd (&B[k+j*lda]);
-                vecA2 = _mm256_load_pd (&a[k+4+i*BLOCK_SIZE]);
-                vecB2 = _mm256_loadu_pd (&B[k+4+j*lda]);
-                vecC1 = _mm256_mul_pd(vecA1, vecB1);
-                vecC2 = _mm256_mul_pd(vecA2, vecB2);
-                vecC0tmp = _mm256_add_pd(vecC1,vecC2);
+          //       vecA1 = _mm256_load_pd (&a[k+i*BLOCK_SIZE]);
+          //       vecB1 = _mm256_loadu_pd (&B[k+j*lda]);
+          //       vecA2 = _mm256_load_pd (&a[k+4+i*BLOCK_SIZE]);
+          //       vecB2 = _mm256_loadu_pd (&B[k+4+j*lda]);
+          //       vecC1 = _mm256_mul_pd(vecA1, vecB1);
+          //       vecC2 = _mm256_mul_pd(vecA2, vecB2);
+          //       vecC0tmp = _mm256_add_pd(vecC1,vecC2);
 
-                _mm256_store_pd(&temp[0], vecC0tmp);
+          //       _mm256_store_pd(&temp[0], vecC0tmp);
 
           
-          cij += temp[0];
-          cij += temp[1];
-          cij += temp[2];
-          cij += temp[3];
-        }
+          // cij += temp[0];
+          // cij += temp[1];
+          // cij += temp[2];
+          // cij += temp[3];
+        
 
-          //delete    cij += a[i+k*BLOCK_SIZE] * B[k+j*lda];
+             cij += a[i+k*BLOCK_SIZE] * B[k+j*lda];
+         }
         C[i+j*lda] = cij;
       }
     }
-  }
+}
 
 /* This routine performs a dgemm operation
  *  C := C + A * B
@@ -123,11 +124,11 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
            int K = min (BLOCK_SIZE, lda-k);
 
 	/* Perform individual block dgemm */
-          //  if((M % BLOCK_SIZE == 0) && (N % BLOCK_SIZE == 0) && (K % BLOCK_SIZE == 0)){
-          //   do_block_fast(lda, M, N, K, A + i + k*lda, B + k + j*lda, C + i + j*lda);
-          // }else{
+           if((M % BLOCK_SIZE == 0) && (N % BLOCK_SIZE == 0) && (K % BLOCK_SIZE == 0)){
+            do_block_fast(lda, M, N, K, A + i + k*lda, B + k + j*lda, C + i + j*lda);
+          }else{
     /* Perform individual block dgemm */
             do_block(lda, M, N, K, A + i + k*lda, B + k + j*lda, C + i + j*lda);
-          //}
+          }
         }
       }
