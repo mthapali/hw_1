@@ -55,13 +55,13 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
   static double temp[4] __attribute__ ((aligned (32)));  //added
 
    //added
-    __m256d vecA1;
-    __m256d vecB1;
-    __m256d vecC1;
-    __m256d vecA2;
-    __m256d vecB2;
-    __m256d vecC2;
-    __m256d vecC0tmp;
+    // __m256d vecA1;
+    // __m256d vecB1;
+    // __m256d vecC1;
+    // __m256d vecA2;
+    // __m256d vecB2;
+    // __m256d vecC2;
+    // __m256d vecC0tmp;
 
       //  make a local aligned copy of A's block
   for( int j = 0; j < K; j++ ) 
